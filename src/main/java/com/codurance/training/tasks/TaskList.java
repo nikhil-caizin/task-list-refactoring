@@ -44,13 +44,7 @@ public final class TaskList {
         for (Map.Entry<String, List<com.codurance.training.tasks.Task>> project : tasks.entrySet()) {
             writer.write(project.getKey());
             writer.write("\n");
-            format(project.getValue(), writer);
-        }
-    }
-
-    private static void format(List<Task> tasks, Writer writer) throws IOException {
-        for (Task task : tasks) {
-            writer.write(String.format("[%c] %d: %s%n", (task.isDone() ? 'x' : ' '), task.getId(), task.getDescription()));
+            Tasks.format(project.getValue(), writer);
         }
     }
 
