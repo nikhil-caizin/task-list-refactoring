@@ -44,9 +44,13 @@ public final class TaskList {
         for (Map.Entry<String, List<com.codurance.training.tasks.Task>> project : tasks.entrySet()) {
             writer.write(project.getKey());
             writer.write("\n");
-            for (com.codurance.training.tasks.Task task : project.getValue()) {
-                writer.write(String.format("[%c] %d: %s%n", (task.isDone() ? 'x' : ' '), task.getId(), task.getDescription()));
-            }
+            format(project.getValue(), writer);
+        }
+    }
+
+    private static void format(List<Task> tasks, Writer writer) throws IOException {
+        for (Task task : tasks) {
+            writer.write(String.format("[%c] %d: %s%n", (task.isDone() ? 'x' : ' '), task.getId(), task.getDescription()));
         }
     }
 
@@ -66,11 +70,11 @@ public final class TaskList {
     }
 
     private void addTask(String project, String description) {
-        List<com.codurance.training.tasks.Task> projectTasks = tasks.get(project);
+        List<Task> projectTasks = tasks.get(project);
         if (projectTasks == null) {
             throw new IllegalArgumentException("Unknown project: " + project);
         }
-        projectTasks.add(new com.codurance.training.tasks.Task(nextId(), description, false));
+        projectTasks.add(new Task(nextId(), description, false));
     }
 
     private void check(String idString) {
@@ -83,8 +87,8 @@ public final class TaskList {
 
     private void setDone(String idString, boolean done) {
         int id = Integer.parseInt(idString);
-        for (Map.Entry<String, List<com.codurance.training.tasks.Task>> project : tasks.entrySet()) {
-            for (com.codurance.training.tasks.Task task : project.getValue()) {
+        for (Map.Entry<String, List<Task>> project : tasks.entrySet()) {
+            for (Task task : project.getValue()) {
                 if (task.getId() == id) {
                     task.setDone(done);
                     return;
