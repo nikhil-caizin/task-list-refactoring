@@ -2,16 +2,13 @@ package com.codurance.training.tasks;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.lang.System.out;
 
 public final class TaskList {
 
-    static Map<String, List<Task>> tasks = new LinkedHashMap<>();
+    private final Map<String, List<Task>> tasks = new LinkedHashMap<>();
     private final Writer writer;
     private long lastId = 0;
 
@@ -41,7 +38,8 @@ public final class TaskList {
     }
 
     private void show() throws IOException {
-        Tasks.formatProject(writer);
+        Tasks task = new Tasks();
+        task.formatProject(tasks,writer);
     }
 
     private void add(String commandLine) {

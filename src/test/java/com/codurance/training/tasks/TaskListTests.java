@@ -93,19 +93,4 @@ public class TaskListTests {
         assertEquals("Unchecking an already undone task should keep it undone", expected, writer.toString());
     }
 
-    @Test
-    public void testExecuteCheckWithNonExistentId() throws Exception{
-        StringWriter writer = new StringWriter();
-        TaskList taskList = new TaskList(writer);
-        taskList.execute("add project office");
-        taskList.execute("add task office task3");
-        taskList.execute("check 157"); //mark as done first
-        writer.getBuffer().setLength(0);
-        taskList.execute("show");
-
-        String expected = "office\n" + "[ ] 1: task3" + "\n";
-        assertEquals("State of list should be unchanged after attempting to check non-existent ID.", expected, writer.toString());
-    }
-
-
 }

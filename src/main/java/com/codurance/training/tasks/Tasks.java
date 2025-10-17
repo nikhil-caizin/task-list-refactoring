@@ -2,22 +2,27 @@ package com.codurance.training.tasks;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Tasks {
+public class Tasks extends ArrayList<Task> {
 
-    static void format(List<Task> tasks, Writer writer) throws IOException {
-        for (Task task : tasks) {
+    void formatProject(Map<String, List<Task>> projects, Writer writer) throws IOException {
+        for (Map.Entry<String, List<Task>> task : projects.entrySet()) {
+            writer.write(task.getKey());
+            writer.write("\n");
+            Tasks tasks = new Tasks();
+            tasks.addAll(task.getValue());
+            tasks.format(writer);
+        }
+    }
+
+    void format(Writer writer) throws IOException {
+        for (Task task : this) {
             writer.write(String.format("[%c] %d: %s%n", (task.isDone() ? 'x' : ' '), task.getId(), task.getDescription()));
         }
     }
 
-    static void formatProject(Writer writerProject) throws IOException {
-        for (Map.Entry<String, List<Task>> project : TaskList.tasks.entrySet()) {
-            writerProject.write(project.getKey());
-            writerProject.write("\n");
-            format(project.getValue(), writerProject);
-        }
-    }
+
 }
