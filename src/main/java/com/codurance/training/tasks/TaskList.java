@@ -11,7 +11,7 @@ import static java.lang.System.out;
 
 public final class TaskList {
 
-    private final Map<String, List<Task>> tasks = new LinkedHashMap<>();
+    static Map<String, List<Task>> tasks = new LinkedHashMap<>();
     private final Writer writer;
     private long lastId = 0;
 
@@ -41,11 +41,7 @@ public final class TaskList {
     }
 
     private void show() throws IOException {
-        for (Map.Entry<String, List<com.codurance.training.tasks.Task>> project : tasks.entrySet()) {
-            writer.write(project.getKey());
-            writer.write("\n");
-            Tasks.format(project.getValue(), writer);
-        }
+        Tasks.formatProject(writer);
     }
 
     private void add(String commandLine) {
