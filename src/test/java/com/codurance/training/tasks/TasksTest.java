@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TasksTest extends TestCase {
@@ -48,5 +49,33 @@ public class TasksTest extends TestCase {
         String expected = "[ ] 1: Refactoring" + System.lineSeparator() +
                 "[ ] 2: Review" + System.lineSeparator();
         assertEquals(expected, writer.toString());
+    }
+
+    @Test
+    public void testFormatProject_SingleProjectWithTasks() throws IOException {
+        List<Task> projectTasks = new ArrayList<>();
+        projectTasks.add(new Task(1, "Do homework", true));
+        projectTasks.add(new Task(2, "Wash dishes", false));
+        TaskList.tasks.put("Home", projectTasks);
+
+        StringWriter writer = new StringWriter();
+
+        Tasks.formatProject(writer);
+
+        String expected =
+                "Home" + System.lineSeparator() +
+                        "[x] 1: Do homework" + System.lineSeparator() +
+                        "[ ] 2: Wash dishes" + System.lineSeparator();
+
+        assertEquals(expected, writer.toString());
+    }
+
+    @Test
+    public void testFormatProject_EmptyTasksMap() throws IOException {
+        StringWriter writer = new StringWriter();
+
+        Tasks.formatProject(writer);
+
+        assertEquals("", writer.toString());
     }
 }
