@@ -8,7 +8,7 @@ import static java.lang.System.out;
 
 public final class TaskList {
 
-    private final Map<String, List<Task>> tasks = new LinkedHashMap<>();
+    private final Projects projects = new Projects();
     private final Writer writer;
     private long lastId = 0;
 
@@ -38,8 +38,7 @@ public final class TaskList {
     }
 
     private void show() throws IOException {
-        Tasks task = new Tasks();
-        task.formatProject(tasks,writer);
+        projects.formatProjects(writer);
     }
 
     private void add(String commandLine) {
@@ -54,11 +53,11 @@ public final class TaskList {
     }
 
     private void addProject(String name) {
-        tasks.put(name, new ArrayList<>());
+        projects.put(name, new Tasks());
     }
 
     private void addTask(String project, String description) {
-        List<Task> projectTasks = tasks.get(project);
+        List<Task> projectTasks = projects.get(project);
         if (projectTasks == null) {
             throw new IllegalArgumentException("Unknown project: " + project);
         }
@@ -75,7 +74,7 @@ public final class TaskList {
 
     private void setDone(String idString, boolean done) {
         int id = Integer.parseInt(idString);
-        for (Map.Entry<String, List<Task>> project : tasks.entrySet()) {
+        for (Map.Entry<String, Tasks> project : projects.entrySet()) {
             for (Task task : project.getValue()) {
                 if (task.getId() == id) {
                     task.setDone(done);
